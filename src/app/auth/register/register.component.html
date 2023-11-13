@@ -1,0 +1,88 @@
+<div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a routerLink="/" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">Uml-2023</span>
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3">
+
+              <div class="card-body">
+
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Crear una cuenta</h5>
+                  <p class="text-center small">Ingrese sus datos personales para crear una cuenta</p>
+                </div>
+
+                <form [formGroup]="usuarioForm" (submit)="login()" class="row g-3">
+                  <div class="col-12">
+                    <label for="nombres" class="form-label">Nombres</label>
+                    <input type="text" class="form-control" id="nombres" formControlName="nombres">
+                    <div class="invalid-feedback">Por favor, ingrese sus nombres!</div>
+                  </div>
+                  <div class="col-12">
+                    <label for="apellidos" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="apellidos" formControlName="apellidos">
+                    <div class="invalid-feedback">Por favor, ingrese sus apellidos!</div>
+                  </div>
+                  <div class="col-12">
+                    <label for="dni" class="form-label">Dni</label>
+                    <input type="number" class="form-control" id="dni" formControlName="dni">
+                    <div class="invalid-feedback">Por favor, ingrese número dni!</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="username" class="form-label">Usuario</label>
+                    <div class="input-group has-validation">
+                      <span class="input-group-text" id="inputGroupPrepend">{{'@'}}</span>
+                      <input type="email" class="form-control" id="username" formControlName="username">
+                      <div class="invalid-feedback">Por favor seleccione un nombre de usuario.</div>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" formControlName="password">
+                    <div class="invalid-feedback">Por favor ingrese una contraseña!</div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="acceptTerms" required>
+                      <label class="form-check-label" for="acceptTerms">Estoy de acuerdo y acepto los <a href="#">términos y condiciones</a></label>
+                      <div class="invalid-feedback">Debe estar de acuerdo antes de enviar los datos.</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" type="submit">Registrar Cuenta</button>
+                  </div>
+                  <div class="col-12">
+                    <p class="small mb-0">Ya tiene una cuenta? <a routerLink="/">Acceder</a></p>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+            <div class="credits">
+              <!-- All the links in the footer should remain intact. -->
+              <!-- You can delete the links only if you purchased the pro version. -->
+              <!-- Licensing information: https://bootstrapmade.com/license/ -->
+              <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+              Desarrollado por <a href="#">Grover</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>

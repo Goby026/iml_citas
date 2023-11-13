@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1>GESTIONAR PERITOS</h1>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-8">
+    @if (peritos.length > 0) {
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Apellidos</th>
+          <th scope="col">Nombres</th>
+          <th scope="col">Estado</th>
+          <th colspan="2">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let perito of peritos; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ perito.apellidos }}</td>
+          <td>{{ perito.nombres }}</td>
+          <td>ACTIVO</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="editar(perito)">
+              <i class="bx bxs-edit"></i>
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="eliminar(perito.id)">
+              <i class="bx bxs-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    }@else{
+    <p>No hay registros aun!</p>
+    }
+
+    <button class="btn btn-primary" (click)="nuevo=true">Registrar perito</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
+      Vertically centered
+    </button>
+  </div>
+  <div class="col-md-4">
+
+  </div>
+</div>
+
+
+<div class="modal fade" id="verticalycentered" tabindex="-1" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form [formGroup]="peritoForm" (ngSubmit)="registrar()">
+        <div class="modal-header">
+          <h5 class="modal-title">Registrar perito</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" class="form-control" formControlName="apellidos" />
+          </div>
+          <div class="form-group">
+            <label for="nombres">Nombres</label>
+            <input type="text" class="form-control" formControlName="nombres" />
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select class="form-select" aria-label="Default select example" formControlName="estado">
+              <option selected="">Open this select menu</option>
+              <option value="1" selected>ACTIVO</option>
+              <option value="2" disabled>SUSPENDIDO</option>
+            </select>
+          </div>
+
+          <!-- <button *ngIf="!edit" type="submit" class="btn btn-primary btn-block">Guardar</button> -->
+
+          <!-- <button *ngIf="edit" type="button" class="btn btn-warning btn-block" (click)="actualizar()">Actualizar</button>
+            <button type="button" class="btn btn-danger btn-block" (click)="nuevo = false">Cancelar</button> -->
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
