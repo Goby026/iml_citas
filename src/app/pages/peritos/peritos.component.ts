@@ -1,9 +1,11 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {Subject} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Perito } from '../../models/perito';
 import { PeritosService } from '../../services/peritos.service';
 import { DataTablesModule } from 'angular-datatables';
+import { environment } from '../../common/global-constants';
 
 @Component({
   selector: 'app-peritos',
@@ -12,7 +14,11 @@ import { DataTablesModule } from 'angular-datatables';
   templateUrl: './peritos.component.html',
   styles: ``
 })
-export class PeritosComponent implements OnInit {
+export class PeritosComponent implements OnInit, OnDestroy {
+
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject<any>();
+
   peritoForm!: FormGroup;
   peritos: Perito[] = [];
   edit = false;
@@ -20,11 +26,22 @@ export class PeritosComponent implements OnInit {
 
   peritoService: PeritosService = inject(PeritosService);
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: environment.language
+    }
     this.crearFormulario();
     this.cargarPeritos();
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+    this.dtOptions = {
+      destroy: true
+    }
   }
 
   crearFormulario() {
@@ -38,16 +55,16 @@ export class PeritosComponent implements OnInit {
 
   cargarPeritos() {
     this.peritoService.getPeritos()
-    .subscribe({
-      next: (resp: Perito[])=>{
-        this.peritos = resp || [];
-        console.log('respuesta: ', resp);
-      },
-      error: err=> console.error(err),
-      complete: ()=> {
-        console.log('Se termino de hacer la consulta');
-      }
-    });
+      .subscribe({
+        next: (resp: Perito[]) => {
+          this.peritos = resp || [];
+          console.log('respuesta: ', resp);
+        },
+        error: err => console.error(err),
+        complete: () => {
+          this.dtTrigger.next(null);
+        }
+      });
   }
 
   registrar() {
@@ -62,13 +79,13 @@ export class PeritosComponent implements OnInit {
     };
 
     this.peritoService.savePerito(perito)
-    .subscribe({
-      next: (resp) => {
-        console.log(resp);
-      },
-      error: err=> console.log(err),
-      complete: ()=>this.limpiarForm()
-    });
+      .subscribe({
+        next: (resp) => {
+          console.log(resp);
+        },
+        error: err => console.log(err),
+        complete: () => this.limpiarForm()
+      });
   }
 
   editar(perito: Perito) {
@@ -78,8 +95,6 @@ export class PeritosComponent implements OnInit {
       estado: perito.estado,
       id: perito.id,
     });
-
-    console.log(perito);
 
     this.edit = true;
     this.nuevo = true;
@@ -103,8 +118,8 @@ export class PeritosComponent implements OnInit {
         console.log(resp);
         this.limpiarForm();
       },
-      error: err=>console.error(err),
-      complete: ()=> {
+      error: err => console.error(err),
+      complete: () => {
         console.log('Perito actualizado')
       }
     });
@@ -121,8 +136,8 @@ export class PeritosComponent implements OnInit {
 
   limpiarForm() {
     this.peritoForm.reset();
-    this.cargarPeritos();
-      this.edit = false;
-      this.nuevo = false;
+    // this.cargarPeritos();
+    this.edit = false;
+    this.nuevo = false;
   }
 }

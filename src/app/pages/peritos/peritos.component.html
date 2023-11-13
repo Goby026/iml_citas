@@ -1,62 +1,86 @@
-<div class="row">
-  <div class="col-md-12">
+
+<div class="pagetitle">
+  <label for="" class="d-flex justify-content-between align-items-center">
     <h1>GESTIONAR PERITOS</h1>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-md-8">
-    @if (peritos.length > 0) {
-    <table class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Apellidos</th>
-          <th scope="col">Nombres</th>
-          <th scope="col">Estado</th>
-          <th colspan="2">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let perito of peritos; let i = index">
-          <th scope="row">{{ i + 1 }}</th>
-          <td>{{ perito.apellidos }}</td>
-          <td>{{ perito.nombres }}</td>
-          <td>ACTIVO</td>
-          <td>
-            <button class="btn btn-warning btn-sm" (click)="editar(perito)">
-              <i class="bx bxs-edit"></i>
-            </button>
-          </td>
-          <td>
-            <button class="btn btn-danger btn-sm" (click)="eliminar(perito.id)">
-              <i class="bx bxs-trash"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    }@else{
-    <p>No hay registros aun!</p>
-    }
-
-    <button class="btn btn-primary" (click)="nuevo=true">Registrar perito</button>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#verticalycentered">
-      Vertically centered
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#peritoForm">
+      <i class="bx bxs-plus-square"></i>
     </button>
+  </label>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+      <li class="breadcrumb-item">Peritos</li>
+      <!-- <li class="breadcrumb-item active">Data</li> -->
+    </ol>
+  </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Registros</h5>
+          <p>Se muestra la lista de personal registrado</p>
+
+          @if (peritos.length > 0) {
+          <!-- Table with stripped rows -->
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table datatable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Nombres</th>
+                <th scope="col">Estado</th>
+                <th colspan="2">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (perito of peritos; track perito.id) {
+                <tr>
+                  <th scope="row">{{ perito.id }}</th>
+                  <td>{{ perito.apellidos }}</td>
+                  <td>{{ perito.nombres }}</td>
+                  <td>ACTIVO</td>
+                  <td>
+                    <button class="btn btn-warning btn-sm" (click)="editar(perito)" data-bs-toggle="modal" data-bs-target="#peritoForm">
+                      <i class="bx bxs-edit"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <button class="btn btn-danger btn-sm" (click)="eliminar(perito.id)">
+                      <i class="bx bxs-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+              
+            </tbody>
+          </table>
+          <!-- End Table with stripped rows -->
+        }@else{
+          <p>No hay registros aun!</p>
+          }
+
+        </div>
+      </div>
+
+    </div>
   </div>
-  <div class="col-md-4">
-
-  </div>
-</div>
+</section>
 
 
-<div class="modal fade" id="verticalycentered" tabindex="-1" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="peritoForm" tabindex="-1" aria-hidden="true" style="display: none;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form [formGroup]="peritoForm" (ngSubmit)="registrar()">
         <div class="modal-header">
-          <h5 class="modal-title">Registrar perito</h5>
+          @if (edit) {
+            <h5 class="modal-title">Editar perito</h5>
+          }@else{
+            <h5 class="modal-title">Registrar perito</h5>
+          }
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -85,8 +109,8 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" class="btn btn-primary">Registrar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="limpiarForm()">Cerrar</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Registrar</button>
         </div>
       </form>
     </div>
